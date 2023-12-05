@@ -10,6 +10,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 
 import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.JwtException;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.security.Keys;
 
@@ -23,13 +24,8 @@ public class JwtUtil {
 		Date currentDate = new Date();
 		Date expiryDate = new Date(currentDate.getTime() + 86400000);
 
-
-		return Jwts.builder()
-				.subject(userDetails.getUsername())
-				.issuedAt(currentDate)
-				.expiration(expiryDate)
-				.signWith(getSignKey())
-				.compact();
+		return Jwts.builder().subject(userDetails.getUsername()).issuedAt(currentDate).expiration(expiryDate)
+				.signWith(getSignKey()).compact();
 	}
 
 	public Key getSignKey() {
@@ -44,16 +40,27 @@ public class JwtUtil {
 	public Date extractExpiration(String token) {
 		return extractClaim(token, Claims::getExpiration);
 	}
+
 	private <T> T extractClaim(String token, Function<Claims, T> claimsResolver) {
 		final Claims claims = extractAllClaims(token);
 		return claimsResolver.apply(claims);
 	}
 
-	private Claims extractAllClaims(String token){
+	private Claims extractAllClaims(String token) {
 		return (Claims) Jwts.parser().build().parse(token);
 	}
 
 	public boolean isTokenExpired(String token) {
 		return extractExpiration(token).before(new Date());
+	}
+
+	public boolean validateToken(String token) {
+		try {
+			Jwts.parser().build().parse(token);
+			return true;
+		}
+		catch(JwtException | IllegalArgumentException e) {
+			return false;
+		}
 	}
 }
