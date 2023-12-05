@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- logback-spring.xml -->
+<configuration>
+
+	<!-- Appenders -->
+	<appender name="infofile"
+		class="ch.qos.logback.core.FileAppender">
+		<file>src/main/resources/AMTS-LoginInfo.log</file> <!-- Specify the file path and name -->
+		<encoder>
+			<pattern>%d{HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n
+			</pattern>
+		</encoder>
+	</appender>
+
+	<appender name="warnfile"
+		class="ch.qos.logback.core.FileAppender">
+		<file>src/main/resources/AMTS-LoginWarn.log</file> <!-- Specify the file path and name -->
+		<encoder>
+			<pattern>%d{HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n
+			</pattern>
+		</encoder>
+	</appender>
+
+	<appender name="errorfile"
+		class="ch.qos.logback.core.FileAppender">
+		<file>src/main/resources/AMTS-AMTS-LoginError.log</file> <!-- Specify the file path and name -->
+		<encoder>
+			<pattern>%d{HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n
+			</pattern>
+		</encoder>
+	</appender>
+
+	<!-- Loggers -->
+	<logger name="org.springframework.boot" level="info">
+        <appender-ref ref="infofile"/>
+    </logger>
+
+	<logger name="com.ibsplc.amtsloginpage" level="info">
+        <appender-ref ref="infofile"/>
+    </logger>
+
+    <logger name="com.ibsplc.amtsloginpage" level="warn">
+        <appender-ref ref="warnfile"/>
+    </logger>
+
+	<logger name="com.ibsplc.amtsloginpage" level="error">
+        <appender-ref ref="errorfile"/>
+    </logger>
+
+</configuration>

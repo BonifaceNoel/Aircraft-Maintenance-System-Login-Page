@@ -23,6 +23,9 @@ dependencies {
 	runtimeOnly 'com.mysql:mysql-connector-j'
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 	testImplementation 'org.springframework.security:spring-security-test'
+
+	implementation group: 'org.slf4j', name: 'slf4j-api', version: '2.0.9'
+    testImplementation group: 'ch.qos.logback', name: 'logback-classic', version: '1.4.11'
 }
 
 tasks.named('test') {

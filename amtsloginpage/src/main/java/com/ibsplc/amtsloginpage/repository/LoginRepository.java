@@ -6,5 +6,8 @@ import com.ibsplc.amtsloginpage.bo.LoginUser;
 
 public interface LoginRepository extends JpaRepository<LoginUser, Long>{
 
-	public LoginUser findByLoginName(String loginName);
+	public static LoginUser findByLoginName(String loginName) {
+		// TODO Auto-generated method stub
+		return null;
+	}
 }
