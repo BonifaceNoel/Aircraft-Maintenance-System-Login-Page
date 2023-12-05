@@ -6,20 +6,22 @@ import java.util.Date;
 import java.util.function.Function;
 
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.stereotype.Component;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.JwtException;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.security.Keys;
 
-@Component
+@Configuration
 public class JwtUtil {
 
 	@Value("${jwt.secret}")
 	private String secret;
 
+	@Bean
 	public String createToken(UserDetails userDetails) {
 		Date currentDate = new Date();
 		Date expiryDate = new Date(currentDate.getTime() + 86400000);
@@ -33,10 +35,12 @@ public class JwtUtil {
 		return Keys.hmacShaKeyFor(keyBytes);
 	}
 
+	@Bean
 	public String extractUsername(String token) {
 		return extractClaim(token, Claims::getSubject);
 	}
 
+	@Bean
 	public Date extractExpiration(String token) {
 		return extractClaim(token, Claims::getExpiration);
 	}
@@ -50,10 +54,12 @@ public class JwtUtil {
 		return (Claims) Jwts.parser().build().parse(token);
 	}
 
+	@Bean
 	public boolean isTokenExpired(String token) {
 		return extractExpiration(token).before(new Date());
 	}
 
+	@Bean
 	public boolean validateToken(String token) {
 		try {
 			Jwts.parser().build().parse(token);
