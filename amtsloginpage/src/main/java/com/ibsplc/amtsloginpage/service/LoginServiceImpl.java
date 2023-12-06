@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.ibsplc.amtsloginpage.bo.LoginUser;
+import com.ibsplc.amtsloginpage.exceptions.NewUserInvalidException;
 import com.ibsplc.amtsloginpage.exceptions.NoLoginNameException;
 import com.ibsplc.amtsloginpage.mapper.LoginMapper;
 
@@ -16,13 +17,25 @@ public class LoginServiceImpl implements LoginService {
 	@Override
 	public LoginUser loadUserByLoginName(String loginName) throws NoLoginNameException {
 		LoginUser user = null;
+
 		try {
-			user =  logMapper.getByUserName(loginName);
+			user = logMapper.getByUserName(loginName);
 		}
-		catch (Exception ex) {
-			throw new NoLoginNameException("Username not found in DB: ", ex.getCause());
+		catch (Exception ec) {
+			throw new NoLoginNameException("UserName Not found Exception: ", ec.getCause());
 		}
 		return user;
+	}
+
+	@Override
+	public void loadNewUser(LoginUser newUser) throws NewUserInvalidException {
+		try {
+			logMapper.newUserRegist(newUser.getLogin_name(), newUser.getLogin_password(), newUser.getLogin_role(), newUser.getAccess_key());
+		}
+		catch (Exception ec) {
+			throw new NewUserInvalidException("User name Store Exception: ", ec.getCause());
+		}
+
 	}
 
 }
