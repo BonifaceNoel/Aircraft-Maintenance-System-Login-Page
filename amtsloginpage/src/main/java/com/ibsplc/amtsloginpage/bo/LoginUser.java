@@ -1,72 +1,69 @@
 package com.ibsplc.amtsloginpage.bo;
 
-
 public class LoginUser {
 
-	private Long loginId;
+	private Long login_id;
 
-	private String loginName;
-	private String loginPassword;
-	private String accessKey;
-	private String loginRole;
+	private String login_name;
+	private String login_password;
+	private String access_key;
+	private String login_role;
 
 	public LoginUser() { }
 
-	public LoginUser(Long loginId, String loginName, String loginPassword, String accessKey, String loginRole) {
+	public LoginUser(Long login_id, String login_name, String login_password, String access_key, String login_role) {
 		super();
-		this.loginId = loginId;
-		this.loginName = loginName;
-		this.loginPassword = loginPassword;
-		this.accessKey = accessKey;
-		this.loginRole = loginRole;
+		this.login_id = login_id;
+		this.login_name = login_name;
+		this.login_password = login_password;
+		this.access_key = access_key;
+		this.login_role = login_role;
 	}
 
-	public Long getLoginId() {
-		return loginId;
+	public Long getLogin_id() {
+		return login_id;
 	}
 
-	public void setLoginId(Long loginId) {
-		this.loginId = loginId;
+	public void setLogin_id(Long login_id) {
+		this.login_id = login_id;
 	}
 
-	public String getLoginName() {
-		return loginName;
+	public String getLogin_name() {
+		return login_name;
 	}
 
-	public void setLoginName(String loginName) {
-		this.loginName = loginName;
+	public void setLogin_name(String login_name) {
+		this.login_name = login_name;
 	}
 
-	public String getLoginPassword() {
-		return loginPassword;
+	public String getLogin_password() {
+		return login_password;
 	}
 
-	public void setLoginPassword(String loginPassword) {
-		this.loginPassword = loginPassword;
+	public void setLogin_password(String login_password) {
+		this.login_password = login_password;
 	}
 
-	public String getAccessKey() {
-		return accessKey;
+	public String getAccess_key() {
+		return access_key;
 	}
 
-	public void setAccessKey(String accessKey) {
-		this.accessKey = accessKey;
+	public void setAccess_key(String access_key) {
+		this.access_key = access_key;
 	}
 
-	public String getLoginRole() {
-		return loginRole;
+	public String getLogin_role() {
+		return login_role;
 	}
 
-	public void setLoginRole(String loginRole) {
-		this.loginRole = loginRole;
+	public void setLogin_role(String login_role) {
+		this.login_role = login_role;
 	}
 
 	@Override
 	public String toString() {
-		return "LoginUser [loginId=" + loginId + ", loginName=" + loginName + ", loginPassword=" + loginPassword
-				+ ", loginRole=" + loginRole + "]";
+		return "LoginUser [login_id=" + login_id + ", login_name=" + login_name + ", login_password=" + login_password
+				+ ", login_role=" + login_role + "]";
 	}
-
-
 
 }
