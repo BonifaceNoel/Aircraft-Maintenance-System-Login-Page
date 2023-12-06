@@ -1,22 +1,23 @@
 package com.ibsplc.amtsloginpage.service;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Service;
 
 import com.ibsplc.amtsloginpage.bo.LoginUser;
 import com.ibsplc.amtsloginpage.exceptions.NewUserInvalidException;
 import com.ibsplc.amtsloginpage.exceptions.NoLoginNameException;
 import com.ibsplc.amtsloginpage.mapper.LoginMapper;
+import com.ibsplc.amtsloginpage.security.AccessKeyGenerator;
 
 @Service
 public class LoginServiceImpl implements LoginService {
 
-	private static final Logger logger = LoggerFactory.getLogger(LoginServiceImpl.class);
-
 	@Autowired
 	LoginMapper logMapper;
+
+	@Autowired
+	AccessKeyGenerator keyGen;
 
 	@Override
 	public LoginUser loadUserByLoginName(String loginName) throws NoLoginNameException {
@@ -34,6 +35,7 @@ public class LoginServiceImpl implements LoginService {
 	@Override
 	public boolean loadNewUser(LoginUser newUser) throws NewUserInvalidException {
 		boolean res = false;
+		newUser.setAccess_key(keyGen.generateRandomAccessKey());
 		try {
 			logMapper.newUserRegist(newUser.getLogin_name(), newUser.getLogin_password(), newUser.getLogin_role(), newUser.getAccess_key());
 			res = true;
@@ -43,5 +45,4 @@ public class LoginServiceImpl implements LoginService {
 		}
 		return res;
 	}
-
 }
