@@ -23,7 +23,7 @@
 
 	<appender name="errorfile"
 		class="ch.qos.logback.core.FileAppender">
-		<file>src/main/resources/AMTS-AMTS-LoginError.log</file> <!-- Specify the file path and name -->
+		<file>src/main/resources/AMTS-LoginError.log</file> <!-- Specify the file path and name -->
 		<encoder>
 			<pattern>%d{HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n
 			</pattern>
