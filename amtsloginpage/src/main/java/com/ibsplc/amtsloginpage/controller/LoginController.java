@@ -7,9 +7,12 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.ibsplc.amtsloginpage.bo.LoginUser;
+import com.ibsplc.amtsloginpage.exceptions.NewUserInvalidException;
 import com.ibsplc.amtsloginpage.exceptions.NoLoginNameException;
 import com.ibsplc.amtsloginpage.service.LoginService;
 
@@ -36,5 +39,22 @@ public class LoginController {
 			loginInfo = new ResponseEntity<>(responseMessage, HttpStatus.NOT_ACCEPTABLE);
 		}
 		return loginInfo;
+	}
+
+	@PostMapping(value="/newregist", consumes=MediaType.APPLICATION_JSON_VALUE, produces=MediaType.APPLICATION_JSON_VALUE)
+	private ResponseEntity<String> newUserInfo(@RequestBody LoginUser newUser) throws NewUserInvalidException {
+		ResponseEntity<String> newLogin = null;
+		String newUserResponse = null;
+
+		if(logService.loadNewUser(newUser)) {
+			newUserResponse = "{\"New User found\" : \"Access Request Sent\"}";
+			newLogin = new ResponseEntity<>(newUserResponse, HttpStatus.CREATED);
+		}
+		else {
+			newUserResponse = "{\"New User error\" : \"Access Request Failed\"}";
+			newLogin = new ResponseEntity<>(newUserResponse, HttpStatus.NOT_MODIFIED);
+		}
+
+		return newLogin;
 	}
 }
