@@ -28,14 +28,17 @@ public class LoginServiceImpl implements LoginService {
 	}
 
 	@Override
-	public void loadNewUser(LoginUser newUser) throws NewUserInvalidException {
+	public boolean loadNewUser(LoginUser newUser) throws NewUserInvalidException {
+		boolean res = false;
 		try {
 			logMapper.newUserRegist(newUser.getLogin_name(), newUser.getLogin_password(), newUser.getLogin_role(), newUser.getAccess_key());
+			res = true;
 		}
 		catch (Exception ec) {
+			res = false;
 			throw new NewUserInvalidException("User name Store Exception: ", ec.getCause());
 		}
-
+		return res;
 	}
 
 }
