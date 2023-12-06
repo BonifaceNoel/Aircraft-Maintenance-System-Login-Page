@@ -6,6 +6,7 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.ibsplc.amtsloginpage.bo.LoginUser;
@@ -19,8 +20,8 @@ public class LoginController {
 	@Autowired
 	LoginService logService;
 
-	@GetMapping(value="/login", produces=MediaType.APPLICATION_JSON_VALUE)
-	private ResponseEntity<String> getLoginInfo(String userName) throws NoLoginNameException{
+	@GetMapping(value="/login/{userName}", produces=MediaType.APPLICATION_JSON_VALUE)
+	private ResponseEntity<String> getLoginInfo(@PathVariable("userName") String userName) throws NoLoginNameException{
 		ResponseEntity<String> loginInfo = null;
 		LoginUser user = logService.loadUserByLoginName(userName);
 
