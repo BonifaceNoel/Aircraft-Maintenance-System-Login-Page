@@ -6,7 +6,7 @@ import org.slf4j.LoggerFactory;
 @SuppressWarnings("serial")
 public class NewUserInvalidException extends Exception {
 
-	private static final Logger logger = LoggerFactory.getLogger(NoLoginNameException.class);
+	private static final Logger logger = LoggerFactory.getLogger(NewUserInvalidException.class);
 
 	public NewUserInvalidException(String error, Throwable cause) {
 		logger.error(error + "" + cause);
