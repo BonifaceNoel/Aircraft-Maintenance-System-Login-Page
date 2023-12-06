@@ -11,8 +11,4 @@ public class NoLoginNameException extends Exception {
 	public NoLoginNameException(String error, Throwable cause) {
 		logger.error(error + "" + cause);
 	}
-
-	public NoLoginNameException(String error, String name) {
-		logger.error(error + "" + name);
-	}
 }

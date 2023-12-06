@@ -11,8 +11,4 @@ public class NewUserInvalidException extends Exception {
 	public NewUserInvalidException(String error, Throwable cause) {
 		logger.error(error + "" + cause);
 	}
-
-	public NewUserInvalidException(String error, String name) {
-		logger.error(error + "" + name);
-	}
 }
