@@ -8,14 +8,14 @@ import org.springframework.stereotype.Service;
 
 import com.ibsplc.amtsloginpage.bo.LoginUser;
 import com.ibsplc.amtsloginpage.exceptions.NoLoginNameException;
-import com.ibsplc.amtsloginpage.repository.LoginRepository;
+import com.ibsplc.amtsloginpage.mapper.LoginRepository;
 
 @Service
 public class LoginServiceImpl implements LoginService {
 
 	@Override
 	public UserDetails loadUserByLoginName(String loginname) throws NoLoginNameException {
-		LoginUser user = LoginRepository.findByLoginName(loginname);
+		LoginUser user =  null;
 
 		if (user == null) {
 			throw new NoLoginNameException("Username not found: ", loginname);

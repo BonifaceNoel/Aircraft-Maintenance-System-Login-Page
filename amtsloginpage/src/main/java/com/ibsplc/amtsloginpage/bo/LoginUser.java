@@ -1,27 +1,13 @@
 package com.ibsplc.amtsloginpage.bo;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
 
-@Entity
-@Table(name = "login_credentials")
 public class LoginUser {
 
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long loginId;
 
-	@Column(name= "login_name")
 	private String loginName;
-	@Column(name= "login_password")
 	private String loginPassword;
-	@Column(name= "access_key")
 	private String accessKey;
-	@Column(name= "login_role")
 	private String loginRole;
 
 	public LoginUser() { }
