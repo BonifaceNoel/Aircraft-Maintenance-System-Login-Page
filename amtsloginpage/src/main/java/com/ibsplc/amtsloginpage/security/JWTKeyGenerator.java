@@ -1,6 +1,8 @@
 package com.ibsplc.amtsloginpage.security;
 
 import java.security.KeyPair;
+import java.time.Instant;
+import java.time.temporal.ChronoUnit;
 import java.util.Date;
 
 import org.slf4j.Logger;
@@ -20,26 +22,19 @@ public class JWTKeyGenerator {
 
 	public String generateRS256Token(String username, String password, String role) throws Exception {
 
-		String jwtKey = null;
-		try {
-			//Creating RSA Key Pair
-			KeyPair keyPair = keyGen.generatePair();
-			System.out.println(keyPair.getPublic().toString());
-			System.out.println(keyPair.getPrivate().toString());
+			//Creating RSA Private Public Key Pair
+			KeyPair keySet = keyGen.generatePair();
+
+			Instant now = Instant.now();
 
 			//Building JWT Access Token
-			jwtKey =  Jwts.builder()
-					.claim("LoginName", username)
-					.claim("LoginPassword", password)
-					.claim("LoginRole", role)
-					.issuedAt(new Date())
-//					.signWith(keyPair.getPrivate(), Jwts.SIG.RS256)
+			return Jwts.builder()
+					.claim("name", username)
+					.claim("password", password)
+					.claim("role", role)
+					.issuedAt(Date.from(now))
+					.signWith(keySet.getPrivate(), Jwts.SIG.RS256)
+					.expiration(Date.from(now.plus(5l, ChronoUnit.MINUTES)))
 					.compact();
-		}
-		catch(Exception e) {
-			logger.error("Error in creating Access Tokens: " + "" + e.getCause());
-		}
-
-		return jwtKey;
 	}
 }
