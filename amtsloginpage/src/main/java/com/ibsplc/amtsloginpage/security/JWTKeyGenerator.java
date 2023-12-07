@@ -8,7 +8,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import com.ibsplc.amtsloginpage.exceptions.JWTKeyGenerationException;
 
 import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.SignatureAlgorithm;
 
 public class JWTKeyGenerator {
 
@@ -21,15 +20,13 @@ public class JWTKeyGenerator {
 			KeyPair keyPair = accKeyGen.generatePair();
 
 			//Building JWT Access Token
-			String accKey = Jwts.builder()
+			return Jwts.builder()
 					.claim("LoginName", username)
 					.claim("LoginPassword", password)
 					.claim("LoginRole", role)
 					.issuedAt(new Date())
 					.signWith(keyPair.getPrivate(), Jwts.SIG.RS256)
 					.compact();
-
-			return accKey;
 		}
 		catch(Exception e) {
 			throw new JWTKeyGenerationException("Error in creating Access Token", e.getCause());
