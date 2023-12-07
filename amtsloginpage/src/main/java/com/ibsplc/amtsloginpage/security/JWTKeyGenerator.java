@@ -22,19 +22,19 @@ public class JWTKeyGenerator {
 
 	public String generateRS256Token(String username, String password, String role) throws Exception {
 
-			//Creating RSA Private Public Key Pair
+			//Creating RSA Private Public Key pair
 			KeyPair keySet = keyGen.generatePair();
 
 			Instant now = Instant.now();
 
 			//Building JWT Access Token
 			return Jwts.builder()
-					.claim("name", username)
-					.claim("password", password)
-					.claim("role", role)
+					.claim("loginName", username)
+					.claim("loginPassword", password)
+					.claim("loginrole", role)
 					.issuedAt(Date.from(now))
 					.signWith(keySet.getPrivate(), Jwts.SIG.RS256)
-					.expiration(Date.from(now.plus(5l, ChronoUnit.MINUTES)))
+					.expiration(Date.from(now.plus(60, ChronoUnit.MINUTES)))
 					.compact();
 	}
 }
