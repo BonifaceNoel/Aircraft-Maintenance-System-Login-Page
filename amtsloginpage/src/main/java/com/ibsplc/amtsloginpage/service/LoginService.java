@@ -10,6 +10,6 @@ import com.ibsplc.amtsloginpage.exceptions.NoLoginNameException;
 public interface LoginService {
 
 	public LoginUser loadUserByLoginName(String loginname) throws NoLoginNameException;
-	public boolean loadNewUser(LoginUser newUser) throws NewUserInvalidException;
+	public boolean loadNewUser(LoginUser newUser) throws Exception;
 
 }

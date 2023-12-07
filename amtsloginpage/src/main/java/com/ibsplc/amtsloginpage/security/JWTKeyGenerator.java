@@ -3,34 +3,43 @@ package com.ibsplc.amtsloginpage.security;
 import java.security.KeyPair;
 import java.util.Date;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-
-import com.ibsplc.amtsloginpage.exceptions.JWTKeyGenerationException;
+import org.springframework.stereotype.Component;
 
 import io.jsonwebtoken.Jwts;
 
+@Component
 public class JWTKeyGenerator {
 
 	@Autowired
-	AccessKeyGenerator accKeyGen;
+	AccessKeyGenerator keyGen;
 
-	public String generateRS256Token(String username, String password, String role) throws JWTKeyGenerationException{
+	private static final Logger logger = LoggerFactory.getLogger(JWTKeyGenerator.class);
+
+	public String generateRS256Token(String username, String password, String role) throws Exception {
+
+		String jwtKey = null;
 		try {
 			//Creating RSA Key Pair
-			KeyPair keyPair = accKeyGen.generatePair();
+			KeyPair keyPair = keyGen.generatePair();
+			System.out.println(keyPair.getPublic().toString());
+			System.out.println(keyPair.getPrivate().toString());
 
 			//Building JWT Access Token
-			return Jwts.builder()
+			jwtKey =  Jwts.builder()
 					.claim("LoginName", username)
 					.claim("LoginPassword", password)
 					.claim("LoginRole", role)
 					.issuedAt(new Date())
-					.signWith(keyPair.getPrivate(), Jwts.SIG.RS256)
+//					.signWith(keyPair.getPrivate(), Jwts.SIG.RS256)
 					.compact();
 		}
 		catch(Exception e) {
-			throw new JWTKeyGenerationException("Error in creating Access Token", e.getCause());
+			logger.error("Error in creating Access Tokens: " + "" + e.getCause());
 		}
-	}
 
+		return jwtKey;
+	}
 }

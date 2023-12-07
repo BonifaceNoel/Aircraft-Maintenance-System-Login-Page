@@ -42,17 +42,19 @@ public class LoginController {
 	}
 
 	@PostMapping(value="/newregist", consumes=MediaType.APPLICATION_JSON_VALUE, produces=MediaType.APPLICATION_JSON_VALUE)
-	private ResponseEntity<String> newUserInfo(@RequestBody LoginUser newUser) throws NewUserInvalidException {
+	private ResponseEntity<String> newUserInfo(@RequestBody LoginUser newUser) throws Exception {
 		ResponseEntity<String> newLogin = null;
 		String newUserResponse = null;
 
-		if(logService.loadNewUser(newUser)) {
+		boolean result = logService.loadNewUser(newUser);
+
+		if(result) {
 			newUserResponse = "{\"New User found\" : \"Access Request Sent\"}";
 			newLogin = new ResponseEntity<>(newUserResponse, HttpStatus.CREATED);
 		}
 		else {
 			newUserResponse = "{\"New User error\" : \"Access Request Failed\"}";
-			newLogin = new ResponseEntity<>(newUserResponse, HttpStatus.NOT_MODIFIED);
+			newLogin = new ResponseEntity<>(newUserResponse, HttpStatus.BAD_REQUEST);
 		}
 
 		return newLogin;

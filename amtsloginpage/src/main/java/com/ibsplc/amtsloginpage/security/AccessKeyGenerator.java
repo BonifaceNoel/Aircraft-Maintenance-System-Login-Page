@@ -5,13 +5,11 @@ import java.security.KeyPairGenerator;
 import java.security.SecureRandom;
 import java.util.Base64;
 
-import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Component;
 
 @Component
 public class AccessKeyGenerator {
 
-	@Bean
 	public String generateRandomAccessKey() {
 		int keyLength = 32;
 
@@ -27,7 +25,7 @@ public class AccessKeyGenerator {
 		return generatedKey;
 	}
 
-	public KeyPair generatePair() throws Exception{
+    KeyPair generatePair() throws Exception{
 		KeyPairGenerator keyPairGenerator = KeyPairGenerator.getInstance("RSA");
 		SecureRandom secure = new SecureRandom();
 

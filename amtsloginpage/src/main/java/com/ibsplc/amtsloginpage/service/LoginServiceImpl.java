@@ -1,14 +1,22 @@
 package com.ibsplc.amtsloginpage.service;
 
+import java.security.KeyPair;
+import java.security.KeyPairGenerator;
+import java.security.NoSuchAlgorithmException;
+import java.security.SecureRandom;
+import java.util.Date;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Service;
 
 import com.ibsplc.amtsloginpage.bo.LoginUser;
-import com.ibsplc.amtsloginpage.exceptions.NewUserInvalidException;
 import com.ibsplc.amtsloginpage.exceptions.NoLoginNameException;
 import com.ibsplc.amtsloginpage.mapper.LoginMapper;
-import com.ibsplc.amtsloginpage.security.AccessKeyGenerator;
+import com.ibsplc.amtsloginpage.security.JWTKeyGenerator;
+
+import io.jsonwebtoken.Jwts;
 
 @Service
 public class LoginServiceImpl implements LoginService {
@@ -17,7 +25,9 @@ public class LoginServiceImpl implements LoginService {
 	LoginMapper logMapper;
 
 	@Autowired
-	AccessKeyGenerator keyGen;
+	JWTKeyGenerator jwtGenerator;
+
+	private static final Logger logger = LoggerFactory.getLogger(JWTKeyGenerator.class);
 
 	@Override
 	public LoginUser loadUserByLoginName(String loginName) throws NoLoginNameException {
@@ -33,15 +43,17 @@ public class LoginServiceImpl implements LoginService {
 	}
 
 	@Override
-	public boolean loadNewUser(LoginUser newUser) throws NewUserInvalidException {
+	public boolean loadNewUser(LoginUser newUser) throws Exception {
 		boolean res = false;
-		newUser.setAccess_key(keyGen.generateRandomAccessKey());
+		String accKey = jwtGenerator.generateRS256Token(newUser.getLogin_name(), newUser.getLogin_password(), newUser.getLogin_role());
+		System.out.println(accKey);
 		try {
-			logMapper.newUserRegist(newUser.getLogin_name(), newUser.getLogin_password(), newUser.getLogin_role(), newUser.getAccess_key());
+			//logMapper.newUserRegist(newUser.getLogin_name(), newUser.getLogin_password(), newUser.getLogin_role(), "fh384737ywe8u");
 			res = true;
 		}
 		catch (Exception ec) {
-			throw new NewUserInvalidException("User name Store Exception: ", ec.getCause());
+			res = false;
+			logger.error("User name Store Exception: " + "" + ec.getCause());
 		}
 		return res;
 	}
