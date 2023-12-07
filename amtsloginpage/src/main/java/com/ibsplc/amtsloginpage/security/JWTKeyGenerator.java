@@ -34,7 +34,7 @@ public class JWTKeyGenerator {
 					.claim("loginrole", role)
 					.issuedAt(Date.from(now))
 					.signWith(keySet.getPrivate(), Jwts.SIG.RS256)
-					.expiration(Date.from(now.plus(60, ChronoUnit.MINUTES)))
+					.expiration(Date.from(now.plus(1440, ChronoUnit.MINUTES)))
 					.compact();
 	}
 }
