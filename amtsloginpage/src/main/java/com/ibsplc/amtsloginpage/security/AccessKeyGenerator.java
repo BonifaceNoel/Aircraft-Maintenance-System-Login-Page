@@ -36,7 +36,7 @@ public class AccessKeyGenerator {
 		KeyPairGenerator keyPairGenerator = KeyPairGenerator.getInstance("RSA");
 		SecureRandom secure = new SecureRandom(seedConcat.getBytes());
 
-		keyPairGenerator.initialize(2048);
+		keyPairGenerator.initialize(2048, secure);
 
 		return keyPairGenerator.generateKeyPair();
 	}

@@ -30,9 +30,6 @@ public class JWTKeyGenerator {
 			//Creating RSA Private Public Key pair
 			KeyPair keySet = keyGen.generatePair(username, password);
 
-//			System.out.println(keySet.getPrivate().toString());
-//			System.out.println(keySet.getPublic().toString());
-
 			Instant now = Instant.now();
 
 			//Building JWT Access Token
@@ -46,7 +43,7 @@ public class JWTKeyGenerator {
 					.compact();
 	}
 
-	public void decodeRS256Token(String accessToken, PublicKey publicKey) {
+	public Map<String, Object> decodeRS256Token(String accessToken) {
 
 		Base64.Decoder decoder = Base64.getUrlDecoder();
 
@@ -55,22 +52,24 @@ public class JWTKeyGenerator {
 		String header = new String(decoder.decode(tokenParts[0]));
 		String payload = new String(decoder.decode(tokenParts[1]));
 
-		Map<String, Object> mapPayload = jsonToMap(payload);
+		Map<String, Object> mapPayload = jsonToMap(header, payload);
 
-		System.out.println(header);
-
-		mapPayload.forEach((key, value) -> System.out.println(key + " : " + value));
+		//mapPayload.forEach((key, value) -> System.out.println(key + " : " + value));
+		return mapPayload;
 	}
 
-	public Map<String, Object> jsonToMap(String payload) {
+	public Map<String, Object> jsonToMap(String header, String payload) {
 		try {
 			ObjectMapper objectMapper = new ObjectMapper();
-			return objectMapper.readValue(payload, Map.class);
+			Map<String, Object> map1 = objectMapper.readValue(header, Map.class);
+			Map<String, Object> map2 = objectMapper.readValue(payload, Map.class);
+
+			map1.putAll(map2);
+			return map1;
 		}
 		catch(Exception ex) {
 			logger.error("Error in creating Map for payload: " + "" + ex.getCause());
 			return null;
 		}
-
 	}
 }
