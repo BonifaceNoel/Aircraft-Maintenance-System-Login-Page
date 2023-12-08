@@ -9,7 +9,7 @@ import com.ibsplc.amtsloginpage.exceptions.NoLoginNameException;
 @Service
 public interface LoginService {
 
-	public LoginUser loadUserByLoginName(String loginname) throws NoLoginNameException;
+	public boolean loadUserByLoginName(String loginname, String password) throws NoLoginNameException;
 	public boolean loadNewUser(LoginUser newUser) throws Exception;
 
 }
