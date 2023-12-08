@@ -23,14 +23,14 @@ public class LoginController {
 	@Autowired
 	LoginService logService;
 
-	@GetMapping(value="/login/{userName}", produces=MediaType.APPLICATION_JSON_VALUE)
-	private ResponseEntity<String> getLoginInfo(@PathVariable("userName") String userName) throws NoLoginNameException{
+	@GetMapping(value="/login/{userName}/{password}", produces=MediaType.APPLICATION_JSON_VALUE)
+	private ResponseEntity<String> getLoginInfo(@PathVariable("userName") String userName, @PathVariable("password") String password) throws NoLoginNameException{
 		ResponseEntity<String> loginInfo = null;
-		LoginUser user = logService.loadUserByLoginName(userName);
+		boolean userStatus = logService.loadUserByLoginName(userName, password);
 
 		String responseMessage = null;
 
-		if(user != null) {
+		if(userStatus) {
 			responseMessage = "{\"Login User found\" : \"Logged in\"}";
 			loginInfo = new ResponseEntity<>(responseMessage, HttpStatus.ACCEPTED);
 		}
