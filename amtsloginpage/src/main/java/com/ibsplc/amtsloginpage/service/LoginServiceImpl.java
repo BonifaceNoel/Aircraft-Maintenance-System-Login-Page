@@ -26,17 +26,24 @@ public class LoginServiceImpl implements LoginService {
 	@Override
 	public boolean loadUserByLoginName(String loginName, String password) throws NoLoginNameException {
 		LoginUser user = null;
-
+		boolean validateUser = false;
 		try {
 			String genKey = logMapper.getByAccessKey(loginName);
 			Map<String, Object> decodedMap = jwtGenerator.decodeRS256Token(genKey);
 
-			user = logMapper.getByUserName(loginName);
+			String decodedName = (String) decodedMap.get("loginName");
+			String decodedKey = (String) decodedMap.get("loginPassword");
+
+			if(decodedName.equals(loginName) && decodedKey.equals(password))
+				validateUser = true;
+			else
+				validateUser = false;
+
 		}
 		catch (Exception ec) {
 			throw new NoLoginNameException("UserName Not found Exception: ", ec.getCause());
 		}
-		return false;
+		return validateUser;
 	}
 
 	@Override
