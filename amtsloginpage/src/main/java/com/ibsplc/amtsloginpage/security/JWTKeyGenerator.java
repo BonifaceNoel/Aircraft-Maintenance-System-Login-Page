@@ -1,14 +1,19 @@
 package com.ibsplc.amtsloginpage.security;
 
 import java.security.KeyPair;
+import java.security.PublicKey;
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
+import java.util.Base64;
 import java.util.Date;
+import java.util.Map;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 import io.jsonwebtoken.Jwts;
 
@@ -23,7 +28,10 @@ public class JWTKeyGenerator {
 	public String generateRS256Token(String username, String password, String role) throws Exception {
 
 			//Creating RSA Private Public Key pair
-			KeyPair keySet = keyGen.generatePair();
+			KeyPair keySet = keyGen.generatePair(username, password);
+
+//			System.out.println(keySet.getPrivate().toString());
+//			System.out.println(keySet.getPublic().toString());
 
 			Instant now = Instant.now();
 
@@ -36,5 +44,33 @@ public class JWTKeyGenerator {
 					.signWith(keySet.getPrivate(), Jwts.SIG.RS256)
 					.expiration(Date.from(now.plus(1440, ChronoUnit.MINUTES)))
 					.compact();
+	}
+
+	public void decodeRS256Token(String accessToken, PublicKey publicKey) {
+
+		Base64.Decoder decoder = Base64.getUrlDecoder();
+
+		String[] tokenParts = accessToken.split("\\.");
+
+		String header = new String(decoder.decode(tokenParts[0]));
+		String payload = new String(decoder.decode(tokenParts[1]));
+
+		Map<String, Object> mapPayload = jsonToMap(payload);
+
+		System.out.println(header);
+
+		mapPayload.forEach((key, value) -> System.out.println(key + " : " + value));
+	}
+
+	public Map<String, Object> jsonToMap(String payload) {
+		try {
+			ObjectMapper objectMapper = new ObjectMapper();
+			return objectMapper.readValue(payload, Map.class);
+		}
+		catch(Exception ex) {
+			logger.error("Error in creating Map for payload: " + "" + ex.getCause());
+			return null;
+		}
+
 	}
 }

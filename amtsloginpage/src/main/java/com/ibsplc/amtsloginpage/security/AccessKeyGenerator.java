@@ -1,19 +1,20 @@
 package com.ibsplc.amtsloginpage.security;
 
-import java.security.KeyFactory;
+import java.nio.charset.StandardCharsets;
+import java.security.Key;
 import java.security.KeyPair;
 import java.security.KeyPairGenerator;
-import java.security.NoSuchAlgorithmException;
-import java.security.PrivateKey;
 import java.security.SecureRandom;
-import java.security.spec.InvalidKeySpecException;
-import java.security.spec.PKCS8EncodedKeySpec;
 import java.util.Base64;
 
 import org.springframework.stereotype.Component;
 
+import io.jsonwebtoken.security.Keys;
+
 @Component
 public class AccessKeyGenerator {
+
+	String secret = "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9";
 
 	public String generateRandomAccessKey() {
 		int keyLength = 32;
@@ -30,12 +31,19 @@ public class AccessKeyGenerator {
 		return generatedKey;
 	}
 
-    KeyPair generatePair() throws Exception{
+    KeyPair generatePair(String username, String password) throws Exception{
+    	String seedConcat = username.concat(password);
 		KeyPairGenerator keyPairGenerator = KeyPairGenerator.getInstance("RSA");
-		SecureRandom secure = new SecureRandom();
+		SecureRandom secure = new SecureRandom(seedConcat.getBytes());
 
-		keyPairGenerator.initialize(2048, secure);
+		keyPairGenerator.initialize(2048);
 
 		return keyPairGenerator.generateKeyPair();
 	}
+
+    public Key getSigningKey() {
+        byte[] keyBytes = this.secret.getBytes(StandardCharsets.UTF_8);
+        return Keys.hmacShaKeyFor(keyBytes);
+    }
+
 }

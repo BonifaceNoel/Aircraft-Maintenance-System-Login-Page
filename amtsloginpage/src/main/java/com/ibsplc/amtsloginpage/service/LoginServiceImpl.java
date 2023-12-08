@@ -46,9 +46,11 @@ public class LoginServiceImpl implements LoginService {
 	public boolean loadNewUser(LoginUser newUser) throws Exception {
 		boolean res = false;
 		String accKey = jwtGenerator.generateRS256Token(newUser.getLogin_name(), newUser.getLogin_password(), newUser.getLogin_role());
+		System.out.println(accKey);
+		jwtGenerator.decodeRS256Token(accKey, null);
 		newUser.setAccess_key(accKey);
 		try {
-			logMapper.newUserRegist(newUser.getLogin_name(), newUser.getLogin_password(), newUser.getLogin_role(), newUser.getAccess_key());
+			//logMapper.newUserRegist(newUser.getLogin_name(), newUser.getLogin_password(), newUser.getLogin_role(), newUser.getAccess_key());
 			res = true;
 		}
 		catch (Exception ec) {
