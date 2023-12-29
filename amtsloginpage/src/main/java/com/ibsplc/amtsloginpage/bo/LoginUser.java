@@ -1,74 +1,69 @@
 package com.ibsplc.amtsloginpage.bo;
 
-import java.util.Objects;
-
-import org.springframework.data.annotation.Id;
-
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-
 public class LoginUser {
 
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long id;
+	private Long login_id;
 
-	private String username;
-	private String password;
+	private String login_name;
+	private String login_password;
+	private String access_key;
+	private String login_role;
 
 	public LoginUser() { }
 
-	public LoginUser(Long id, String username, String password) {
+	public LoginUser(Long login_id, String login_name, String login_password, String access_key, String login_role) {
 		super();
-		this.id = id;
-		this.username = username;
-		this.password = password;
+		this.login_id = login_id;
+		this.login_name = login_name;
+		this.login_password = login_password;
+		this.access_key = access_key;
+		this.login_role = login_role;
 	}
 
-	public Long getId() {
-		return id;
+	public Long getLogin_id() {
+		return login_id;
 	}
 
-	public void setId(Long id) {
-		this.id = id;
+	public void setLogin_id(Long login_id) {
+		this.login_id = login_id;
 	}
 
-	public String getUsername() {
-		return username;
+	public String getLogin_name() {
+		return login_name;
 	}
 
-	public void setUsername(String username) {
-		this.username = username;
+	public void setLogin_name(String login_name) {
+		this.login_name = login_name;
 	}
 
-	public String getPassword() {
-		return password;
+	public String getLogin_password() {
+		return login_password;
 	}
 
-	public void setPassword(String password) {
-		this.password = password;
+	public void setLogin_password(String login_password) {
+		this.login_password = login_password;
 	}
 
-	@Override
-	public int hashCode() {
-		return Objects.hash(id, password, username);
+	public String getAccess_key() {
+		return access_key;
 	}
 
-	@Override
-	public boolean equals(Object obj) {
-		if (this == obj)
-			return true;
-		if (obj == null)
-			return false;
-		if (getClass() != obj.getClass())
-			return false;
-		LoginUser other = (LoginUser) obj;
-		return Objects.equals(id, other.id) && Objects.equals(password, other.password)
-				&& Objects.equals(username, other.username);
+	public void setAccess_key(String access_key) {
+		this.access_key = access_key;
+	}
+
+	public String getLogin_role() {
+		return login_role;
+	}
+
+	public void setLogin_role(String login_role) {
+		this.login_role = login_role;
 	}
 
 	@Override
 	public String toString() {
-		return "LoginUser [id=" + id + ", username=" + username + ", password=" + password + "]";
+		return "LoginUser [login_id=" + login_id + ", login_name=" + login_name + ", login_password=" + login_password
+				+ ", login_role=" + login_role + "]";
 	}
+
 }
